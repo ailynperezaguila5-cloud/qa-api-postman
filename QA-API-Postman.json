@@ -1,0 +1,286 @@
+{
+  "info": {
+    "_postman_id": "e1575b3e-2f53-43a9-befa-e820ddaa92e2",
+    "name": "My Collection",
+    "description": "### Welcome to Postman! This is your first collection. \n\nCollections are your starting point for building and testing APIs. You can use this one to:\n\n• Group related requests\n• Test your API in real-world scenarios\n• Document and share your requests\n\nUpdate the name and overview whenever you’re ready to make it yours.\n\n[Learn more about Postman Collections.](https://learning.postman.com/docs/collections/collections-overview/)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "58344477",
+    "_collection_link": "https://go.postman.co/collection/58344477-e1575b3e-2f53-43a9-befa-e820ddaa92e2?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "GET - Usuario inexistente",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"GET usuario inexistente devuelve 404\", function () {\n    pm.response.to.have.status(404);\n});\n\npm.test(\"La respuesta de error no contiene un usuario válido\", function () {\n    const data = pm.response.json();\n    pm.expect(data).to.be.an(\"object\");\n    pm.expect(data).to.not.have.property(\"id\");\n});\n"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://jsonplaceholder.typicode.com/users/999",
+          "protocol": "https",
+          "host": [
+            "jsonplaceholder",
+            "typicode",
+            "com"
+          ],
+          "path": [
+            "users",
+            "999"
+          ]
+        },
+        "description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+      },
+      "response": []
+    },
+    {
+      "name": "POST - Crear usuario",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Successful POST request\", function () {\n    pm.expect(pm.response.code).to.be.oneOf([200, 201]);\n});\n\nconst data = pm.response.json();\npm.environment.set(\"newUserId\", data.id);\n\npm.test(\"El usuario fue creado correctamente\", function () {\n    pm.expect(data.name).to.eql(\"Ailyn\");\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n\t\n  \"name\": \"Ailyn\",\n  \"username\": \"ailynqa\",\n  \"email\": \"ailyn@test.com\"\n\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/users",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "users"
+          ]
+        },
+        "description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+      },
+      "response": []
+    },
+    {
+      "name": "GET - Lista usuarios",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});\r\n\r\npm.test(\"Hay 10 usuarios\", function () {\r\n    const data = pm.response.json();\r\n    pm.expect(data).to.have.length(10);\r\n});\r\n\r\npm.test(\"Todos los usuarios tienen nombre\", function () {\r\n    const data = pm.response.json();\r\n\r\n    data.forEach(function(usuario) {\r\n        pm.expect(usuario).to.have.property(\"name\");\r\n    });\r\n});\r\n\r\npm.test(\"Todos los usuarios tienen email\", function () {\r\n    const data = pm.response.json();\r\n\r\n    data.forEach(function(usuario) {\r\n        pm.expect(usuario.email).to.be.a(\"string\");\r\n        pm.expect(usuario.email).to.include(\"@\");\r\n    });\r\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://jsonplaceholder.typicode.com/users",
+          "protocol": "https",
+          "host": [
+            "jsonplaceholder",
+            "typicode",
+            "com"
+          ],
+          "path": [
+            "users"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET id 3",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"El filtro devuelve el usuario con id 3\", function () {\r\n    const data = pm.response.json();\r\n    pm.expect(data[0].id).to.eql(3);\r\n});"
+            ]
+          }
+        }
+      ],
+      "protocolProfileBehavior": {
+        "disabledSystemHeaders": {
+          "accept": true
+        }
+      },
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "https://jsonplaceholder.typicode.com/users?id=3",
+          "protocol": "https",
+          "host": [
+            "jsonplaceholder",
+            "typicode",
+            "com"
+          ],
+          "path": [
+            "users"
+          ],
+          "query": [
+            {
+              "key": "id",
+              "value": "3"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET token",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"La autenticación fue correcta\", function () {\r\n    pm.response.to.have.status(200);\r\n});\r\n\r\npm.test(\"El usuario está autenticado\", function () {\r\n    const data = pm.response.json();\r\n    pm.expect(data.authenticated).to.eql(true);\r\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "mi-token-de-prueba",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://httpbin.org/bearer",
+          "protocol": "https",
+          "host": [
+            "httpbin",
+            "org"
+          ],
+          "path": [
+            "bearer"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET id",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/users/{{userId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "users",
+            "{{userId}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET- Usuario por variable",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "\r\npm.test(\"El ID del usuario es correcto\", function () {\r\n    const data = pm.response.json();\r\n    pm.expect(data.id).to.eql(1);\r\n});\r\n\r\nconst data = pm.response.json();\r\npm.environment.set(\"userId\", data.id);\r\n\r\npm.test(\"El usuario solicitado coincide con el ID\", function () {\r\n    const data = pm.response.json();\r\n    pm.expect(data.id).to.eql(Number(pm.environment.get(\"userId\")));\r\n});\r\n\r\npm.test(\"El usuario tiene los campos obligatorios\", function () {\r\n    const data = pm.response.json();\r\n\r\n    pm.expect(data).to.have.property(\"id\");\r\n    pm.expect(data).to.have.property(\"name\");\r\n    pm.expect(data).to.have.property(\"email\");\r\n});\r\n\r\npm.test(\"Los tipos de datos son correctos\", function () {\r\n    const data = pm.response.json();\r\n\r\n    pm.expect(data.id).to.be.a(\"number\");\r\n    pm.expect(data.name).to.be.a(\"string\");\r\n    pm.expect(data.email).to.be.a(\"string\");\r\n});\r\n\r\npm.test(\"El email tiene un formato básico válido\", function () {\r\n    const data = pm.response.json();\r\n\r\n    pm.expect(data.email).to.match(/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/);\r\n});\r\n\r\n\r\npm.test(\"La validación rechaza un email inválido\", function () {\r\n    const email = \"ailyn-sin-arroba.com\";\r\n    const formatoValido = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;\r\n\r\n    pm.expect(formatoValido.test(email)).to.eql(false);\r\n});\r\n\r\n\r\n"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/users/{{userId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "users",
+            "{{userId}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "DELETE USER1",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"DELETE devuelve 200 OK\", function () {\r\n    pm.response.to.have.status(200);\r\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"name\": \"Ailyn QA Tester\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/users/1",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "users",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+INFORME DE EJECUCIÓN QA
+Proyecto: Pruebas de API REST con Postman
+Fecha: 2026-10-15
+Total ejecutados: 18
+Aprobados: 18
+Fallidos: 0
+Observaciones: Se validaron códigos HTTP, estructura JSON, tipos de datos, formato de email y tiempo de respuesta.
